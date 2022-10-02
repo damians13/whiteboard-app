@@ -71,7 +71,8 @@ class WhiteboardTest {
     @Test
     public void testRemoveSingleText() {
         board.addText("foo", 1, 13);
-        board.removeText("foo");
+        Text foo = board.getTextAtIndex(0);
+        board.removeText(foo);
         assertEquals(0, board.getNumTextLinesOnBoard());
     }
 
@@ -79,7 +80,9 @@ class WhiteboardTest {
     public void testRemoveSingleDuplicateText() {
         board.addText("foo", 1, 13);
         board.addText("foo", 4, 4);
-        board.removeText("foo");
+        Text foo0 = board.getTextAtIndex(0);
+        Text foo1 = board.getTextAtIndex(1);
+        board.removeText(foo0);
 
         assertEquals(1, board.getNumTextLinesOnBoard());
         Text remaining = board.getTextAtIndex(0);
@@ -93,8 +96,9 @@ class WhiteboardTest {
         board.addText("foo", 1, 13);
         board.addText("bar", 6, 7);
         board.addText("baz", 13, 5);
+        Text bar = board.getTextAtIndex(1);
         // Remove middle entry
-        board.removeText("bar");
+        board.removeText(bar);
         assertEquals(2, board.getNumTextLinesOnBoard());
         Text firstLine = board.getTextAtIndex(0);
         Text secondLine = board.getTextAtIndex(1);
@@ -114,9 +118,13 @@ class WhiteboardTest {
         board.addText("bar", 6, 7);
         board.addText("baz", 13, 5);
 
-        board.removeText("foo");
-        board.removeText("bar");
-        board.removeText("baz");
+        Text foo = board.getTextAtIndex(0);
+        Text bar = board.getTextAtIndex(1);
+        Text baz = board.getTextAtIndex(2);
+
+        board.removeText(foo);
+        board.removeText(bar);
+        board.removeText(baz);
 
         assertEquals(0, board.getNumTextLinesOnBoard());
     }

@@ -28,13 +28,8 @@ public class Whiteboard {
     // EFFECTS: removes the given text object from the whiteboard
     // (if there are duplicates, the first one will be removed)
     // REQUIRES: text is on the whiteboard
-    public void removeText(String text) {
-        for (Text textOnBoard : listOfText) {
-            if (textOnBoard.getText().equals(text)) {
-                listOfText.remove(textOnBoard);
-                break;
-            }
-        }
+    public void removeText(Text text) {
+        listOfText.remove(text);
     }
 
     // MODIFIES: text
