@@ -56,6 +56,7 @@ public class WhiteboardApp {
     }
 
     // EFFECTS: displays the user's whiteboard in the console
+    // REQUIRES: board is not null
     private void displayWhiteboard(Whiteboard board) {
         ArrayList<ArrayList<String>> boardText = new ArrayList<ArrayList<String>>();
         // Fill each entry with a "." to start
@@ -162,6 +163,7 @@ public class WhiteboardApp {
     // EFFECTS: if the user confirms moving the given Text, it will prompt them for the new location and return true
     // if the user does not wish to move the given text, it will return false and modify nothing
     // MODIFIES: this, textOnBoard
+    // REQUIRES: textOnBoard is not null
     private boolean doMoveText(Text textOnBoard) {
         System.out.printf("I found \"%s\" at position (%d, %d) on the whiteboard.\n",
                 textOnBoard.getText(),
