@@ -57,7 +57,7 @@ public class Whiteboard {
         return height;
     }
 
-    // MODIFIES: this AND text on this whiteboard
+    // MODIFIES: this, text on this whiteboard
     // EFFECTS: sets the width of this whiteboard to the given width and moves any text lines that would be cut off to
     // the new edge
     // REQUIRES: width > 0
@@ -71,7 +71,7 @@ public class Whiteboard {
         }
     }
 
-    // MODIFIES: this AND text on this whiteboard
+    // MODIFIES: this, text on this whiteboard
     // EFFECTS: sets the height of this whiteboard to the given height and moves any text lines that would be cut off
     // to the new edge
     // REQUIRES: height > 0
