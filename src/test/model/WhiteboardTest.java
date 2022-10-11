@@ -204,46 +204,65 @@ class WhiteboardTest {
     }
 
     @Test
-    public void testTextMovesOnBoardResizeEqual() {
+    public void testTextMovesOnBoardResizeEqualHeight() {
         board.addText("Testing 1, 2, 3!", 30, 18);
         Text text = board.getTextAtIndex(0);
+
         board.setHeight(18);
         assertEquals(1, board.getNumTextLinesOnBoard());
         assertEquals(30, text.getXcoord());
         assertEquals(17, text.getYcoord());
+    }
+
+    @Test
+    public void testTextMovesOnBoardResizeEqualWidth() {
+        board.addText("Testing 1, 2, 3!", 30, 18);
+        Text text = board.getTextAtIndex(0);
 
         board.setWidth(30);
         assertEquals(1, board.getNumTextLinesOnBoard());
         assertEquals(29, text.getXcoord());
-        assertEquals(17, text.getYcoord());
+        assertEquals(18, text.getYcoord());
     }
 
     @Test
-    public void testTextMovesOnBoardResizeGreater() {
+    public void testTextMovesOnBoardResizeGreaterHeight() {
         board.addText("Testing 1, 2, 3!", 30, 18);
         Text text = board.getTextAtIndex(0);
 
         board.setHeight(10);
         assertEquals(30, text.getXcoord());
         assertEquals(9, text.getYcoord());
-
-        board.setWidth(10);
-        assertEquals(9, text.getXcoord());
-        assertEquals(9, text.getYcoord());
     }
 
     @Test
-    public void testTextMovesOnBoardResizeMinimum() {
+    public void testTextMovesOnBoardResizeGreaterWidth() {
+        board.addText("Testing 1, 2, 3!", 30, 18);
+        Text text = board.getTextAtIndex(0);
+
+        board.setWidth(10);
+        assertEquals(9, text.getXcoord());
+        assertEquals(18, text.getYcoord());
+    }
+
+    @Test
+    public void testTextMovesOnBoardResizeMinimumHeight() {
+        board.addText("Testing 1, 2, 3!", 30, 18);
+        Text text = board.getTextAtIndex(0);
+
+        board.setHeight(1);
+        assertEquals(30, text.getXcoord());
+        assertEquals(0, text.getYcoord());
+    }
+
+    @Test
+    public void testTextMovesOnBoardResizeMinimumWidth() {
         board.addText("Testing 1, 2, 3!", 30, 18);
         Text text = board.getTextAtIndex(0);
 
         board.setWidth(1);
         assertEquals(0, text.getXcoord());
         assertEquals(18, text.getYcoord());
-
-        board.setHeight(1);
-        assertEquals(0, text.getXcoord());
-        assertEquals(0, text.getYcoord());
     }
 
 }
