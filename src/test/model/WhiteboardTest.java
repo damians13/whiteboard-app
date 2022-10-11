@@ -204,6 +204,24 @@ class WhiteboardTest {
     }
 
     @Test
+    public void testTextDoesntMoveOnSetGreaterWidth() {
+        board.addText("Testing 1, 2, 3!", 30, 18);
+        Text text = board.getTextAtIndex(0);
+
+        board.setWidth(40);
+        assertEquals(30, text.getXcoord());
+    }
+
+    @Test
+    public void testTextDoesntMoveOnSetGreaterHeight() {
+        board.addText("Testing 1, 2, 3!", 30, 18);
+        Text text = board.getTextAtIndex(0);
+
+        board.setHeight(50);
+        assertEquals(18, text.getYcoord());
+    }
+
+    @Test
     public void testTextMovesOnBoardResizeEqualHeight() {
         board.addText("Testing 1, 2, 3!", 30, 18);
         Text text = board.getTextAtIndex(0);
