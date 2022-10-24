@@ -15,3 +15,5 @@ Here are the user stories for my project:
 - As a user, I want to be able to move some text that I have written on a whiteboard around
 - As a user, I want to be able to edit or delete some text that I have written on a whiteboard
 - As a user, I want to be able to resize my whiteboard
+- As a user, I want to be able to save the state of my whiteboard (text and positions, size of whiteboard)
+- As a user, I want to be able to open a whiteboard I have previously saved
