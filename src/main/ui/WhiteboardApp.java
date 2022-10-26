@@ -2,7 +2,11 @@ package ui;
 
 import model.Text;
 import model.Whiteboard;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -89,6 +93,8 @@ public class WhiteboardApp {
         System.out.println("\tmove\tmove text on the whiteboard");
         System.out.println("\tresize\tresize your whiteboard");
         System.out.println("\tdelete\tdelete text on the whiteboard");
+        System.out.println("\tsave\tsave current whiteboard for later");
+        System.out.println("\tload\tload a previously saved whiteboard");
     }
 
     // EFFECTS: processes the given command
@@ -109,6 +115,21 @@ public class WhiteboardApp {
                 break;
             case "resize":
                 resizeWhiteboard();
+                break;
+            default:
+                processCommandContinued(command);
+                break;
+        }
+    }
+
+    // EFFECTS: processes the given command (additional instructions that didn't fit in processCommand)
+    private void processCommandContinued(String command) {
+        switch (command) {
+            case "save":
+                saveWhiteboard();
+                break;
+            case "load":
+                loadWhiteboard();
                 break;
             default:
                 System.out.println("Sorry! I don't recognize that command");
@@ -240,5 +261,46 @@ public class WhiteboardApp {
 
         board.setWidth(widthInput);
         board.setHeight(heightInput);
+    }
+
+    // EFFECTS: saves the current whiteboard for later use
+    private void saveWhiteboard() {
+        System.out.println("What name would you like to save this whiteboard under?");
+        String name = scanner.next();
+        JsonWriter writer = new JsonWriter("./data/" + name + ".json");
+        try {
+            writer.open();
+        } catch (FileNotFoundException e) {
+            System.out.println("That filename is invalid.");
+            return;
+        }
+        writer.write(board);
+        writer.close();
+        System.out.println("Your whiteboard has been saved as " + name + ".json in the data directory.");
+    }
+
+    // EFFECTS: loads a saved whiteboard, giving the user the option to save if they forgot to first
+    // MODIFIES: this
+    private void loadWhiteboard() {
+        System.out.println("What is the name of the whiteboard you would like to load?");
+        System.out.println("If you forgot to save your current whiteboard and wish to do so, enter | (vertical line)");
+        String name = scanner.next();
+
+        // Use "|" here because it is an invalid character for a file name, so this won't restrict choice of filename
+        if (name.equals("|")) {
+            saveWhiteboard();
+            System.out.println("Now, what is the name of the whiteboard you would like to load?");
+            name = scanner.next();
+        }
+
+        JsonReader reader = new JsonReader("./data/" + name + ".json");
+        try {
+            Whiteboard temporaryWhiteboard = reader.read();
+            // No error, replace current whiteboard
+            board = temporaryWhiteboard;
+            System.out.println("Loaded " + name + ".json successfully.");
+        } catch (IOException e) {
+            System.out.println("I couldn't find a file with that name in the data directory.");
+        }
     }
 }

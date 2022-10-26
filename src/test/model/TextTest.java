@@ -1,9 +1,11 @@
 package model;
 
+import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TextTest {
     private Text text;
@@ -48,5 +50,14 @@ public class TextTest {
 
         text.setYcoord(0);
         assertEquals(0, text.getYcoord());
+    }
+
+    @Test
+    public void testToJson() {
+        JSONObject expected = new JSONObject();
+        expected.put("x", 3);
+        expected.put("y", 4);
+        expected.put("text", "foo");
+        assertTrue(expected.similar(text.toJson()));
     }
 }

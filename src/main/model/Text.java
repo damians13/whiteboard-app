@@ -1,5 +1,7 @@
 package model;
 
+import org.json.JSONObject;
+
 // Represents a line of text on a whiteboard with a position described by x and y coordinates
 public class Text {
     private String text;
@@ -36,5 +38,14 @@ public class Text {
 
     public void setYcoord(int ycoord) {
         this.ycoord = ycoord;
+    }
+
+    // EFFECTS: returns a JSONObject representing this text object (text field and position on board)
+    public JSONObject toJson() {
+        JSONObject object = new JSONObject();
+        object.put("text", text);
+        object.put("x", xcoord);
+        object.put("y", ycoord);
+        return object;
     }
 }

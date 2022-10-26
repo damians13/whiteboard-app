@@ -1,9 +1,12 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class WhiteboardTest {
     private Whiteboard board;
@@ -283,4 +286,29 @@ class WhiteboardTest {
         assertEquals(18, text.getYcoord());
     }
 
+    @Test
+    public void testToJsonEmpty() {
+        JSONObject expected = new JSONObject();
+        expected.put("height", 20);
+        expected.put("width", 32);
+        expected.put("textLines", new JSONArray());
+        assertTrue(expected.similar(board.toJson()));
+    }
+
+    @Test
+    public void testToJsonWithText() {
+        board.addText("Hello", 3, 4);
+        board.addText("hi", 0, 0);
+
+        JSONObject actual = board.toJson();
+        assertEquals(32, actual.getNumber("width"));
+        assertEquals(20, actual.getNumber("height"));
+
+        JSONObject text1 = new JSONObject().put("text", "Hello").put("x", 3).put("y", 4);
+        JSONObject text2 = new JSONObject().put("text", "hi").put("x", 0).put("y", 0);
+
+        JSONArray array = actual.getJSONArray("textLines");
+        assertTrue(array.getJSONObject(0).similar(text1));
+        assertTrue(array.getJSONObject(1).similar(text2));
+    }
 }

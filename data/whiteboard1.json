@@ -1,0 +1,16 @@
+{
+    "textLines": [
+        {
+            "x": 0,
+            "y": 0,
+            "text": "Hello, CPSC 210!"
+        },
+        {
+            "x": 5,
+            "y": 3,
+            "text": "hi"
+        }
+    ],
+    "width": 8,
+    "height": 4
+}

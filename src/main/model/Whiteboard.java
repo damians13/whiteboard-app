@@ -1,5 +1,8 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 // Represents a whiteboard with a set width and height and a list of text written on it
@@ -83,5 +86,21 @@ public class Whiteboard {
                 text.setYcoord(height - 1);
             }
         }
+    }
+
+    // EFFECTS: returns a JSONObject representation of this whiteboard
+    public JSONObject toJson() {
+        JSONObject object = new JSONObject();
+        JSONArray array = new JSONArray();
+
+        for (Text text : listOfText) {
+            array.put(text.toJson());
+        }
+
+        object.put("height", height);
+        object.put("width", width);
+        object.put("textLines", array);
+
+        return object;
     }
 }
