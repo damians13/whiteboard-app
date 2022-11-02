@@ -5,23 +5,41 @@ import model.Whiteboard;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
+import java.awt.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import javax.swing.*;
 
 // Whiteboard application
-public class WhiteboardApp {
+public class WhiteboardApp extends JFrame {
     private Whiteboard board;
     private Scanner scanner;
     private boolean shouldRun;
+    private WhiteboardPanel panel;
 
     // EFFECTS: run the whiteboard application
     public WhiteboardApp() {
-        runWhiteboardApp();
+        super("Whiteboard App");
+        //runWhiteboardApp();
+        runWhiteboardAppGUI();
     }
 
-    // EFFECTS: handles the main loop of the application
+    // EFFECTS: handles the main loop of the GUI application
+    private void runWhiteboardAppGUI() {
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setMinimumSize(new Dimension(320, 240));
+        setLayout(new FlowLayout());
+        panel = new WhiteboardPanel(board);
+        add(panel);
+        pack();
+        //setLocationRelativeTo(null);
+        setResizable(false);
+        setVisible(true);
+    }
+
+    // EFFECTS: handles the main loop of the CLI application
     private void runWhiteboardApp() {
         init();
 
