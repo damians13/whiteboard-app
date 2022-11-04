@@ -18,6 +18,8 @@ public class WhiteboardApp extends JFrame {
     private Scanner scanner;
     private boolean shouldRun;
     private WhiteboardPanel panel;
+    private JButton saveButton;
+    private JButton loadButton;
 
     // EFFECTS: run the whiteboard application
     public WhiteboardApp() {
@@ -39,6 +41,17 @@ public class WhiteboardApp extends JFrame {
 
         panel = new WhiteboardPanel(board);
         add(panel);
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
+        saveButton = new JButton("Save");
+        saveButton.addActionListener(new ButtonActionListener());
+        buttonPanel.add(saveButton);
+        loadButton = new JButton("Load");
+        buttonPanel.add(loadButton);
+        loadButton.addActionListener(new ButtonActionListener());
+
+        add(buttonPanel);
         pack();
 
         setLocationRelativeTo(null);
