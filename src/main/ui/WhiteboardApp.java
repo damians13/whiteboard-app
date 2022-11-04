@@ -29,12 +29,19 @@ public class WhiteboardApp extends JFrame {
     // EFFECTS: handles the main loop of the GUI application
     private void runWhiteboardAppGUI() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setMinimumSize(new Dimension(320, 240));
         setLayout(new FlowLayout());
+
+        // debug
+        board = new Whiteboard(3, 4);
+        board.addText("1,1", 1, 1);
+        board.addText("0,0", 0, 0);
+        board.addText("3,4", 3, 4);
+
         panel = new WhiteboardPanel(board);
         add(panel);
         pack();
-        //setLocationRelativeTo(null);
+
+        setLocationRelativeTo(null);
         setResizable(false);
         setVisible(true);
     }
