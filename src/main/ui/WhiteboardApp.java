@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 // Whiteboard application
 public class WhiteboardApp extends JFrame {
@@ -18,6 +19,7 @@ public class WhiteboardApp extends JFrame {
     private Scanner scanner;
     private boolean shouldRun;
     private WhiteboardPanel panel;
+    private JPanel buttonPanel;
     private JButton saveButton;
     private JButton loadButton;
 
@@ -33,23 +35,18 @@ public class WhiteboardApp extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new FlowLayout());
 
-        // debug
-        board = new Whiteboard(3, 4);
-        board.addText("1,1", 1, 1);
-        board.addText("0,0", 0, 0);
-        board.addText("3,4", 3, 4);
-
+        board = new Whiteboard(10, 10);
         panel = new WhiteboardPanel(board);
         add(panel);
 
-        JPanel buttonPanel = new JPanel();
+        buttonPanel = new JPanel();
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
         saveButton = new JButton("Save");
-        saveButton.addActionListener(new ButtonActionListener());
+        saveButton.addActionListener(new ButtonActionListener(this));
         buttonPanel.add(saveButton);
         loadButton = new JButton("Load");
         buttonPanel.add(loadButton);
-        loadButton.addActionListener(new ButtonActionListener());
+        loadButton.addActionListener(new ButtonActionListener(this));
 
         add(buttonPanel);
         pack();
@@ -317,6 +314,31 @@ public class WhiteboardApp extends JFrame {
         System.out.println("Your whiteboard has been saved as " + name + ".json in the data directory.");
     }
 
+    // EFFECTS: opens a popup GUI to save the current whiteboard
+    public void openSaveWhiteboardGUI() {
+        JFrame saveFrame = new JFrame();
+        JFileChooser fileChooser = new JFileChooser("./data");
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("JSON Files", "json");
+        fileChooser.setFileFilter(filter);
+        fileChooser.setAcceptAllFileFilterUsed(false);
+        fileChooser.setDialogTitle("Save as...");
+        if (fileChooser.showSaveDialog(saveFrame) == JFileChooser.APPROVE_OPTION) {
+            String filePath = fileChooser.getSelectedFile().getAbsolutePath();
+            if (!filePath.endsWith(".json")) {
+                filePath = filePath + ".json";
+            }
+            JsonWriter writer = new JsonWriter(filePath);
+            try {
+                writer.open();
+            } catch (FileNotFoundException e) {
+                System.out.println("That filename is invalid.");
+                return;
+            }
+            writer.write(board);
+            writer.close();
+        }
+    }
+
     // EFFECTS: loads a saved whiteboard, giving the user the option to save if they forgot to first
     // MODIFIES: this
     private void loadWhiteboard() {
@@ -339,6 +361,33 @@ public class WhiteboardApp extends JFrame {
             System.out.println("Loaded " + name + ".json successfully.");
         } catch (IOException e) {
             System.out.println("I couldn't find a file with that name in the data directory.");
+        }
+    }
+
+    // EFFECTS: loads a popup GUI to load a saved whiteboard
+    // MODIFIES: this
+    public void openLoadWhiteboardGUI() {
+        JFrame saveFrame = new JFrame();
+        JFileChooser fileChooser = new JFileChooser("./data");
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("JSON Files", "json");
+        fileChooser.setFileFilter(filter);
+        fileChooser.setAcceptAllFileFilterUsed(false);
+        fileChooser.setDialogTitle("Load...");
+        if (fileChooser.showSaveDialog(saveFrame) == JFileChooser.APPROVE_OPTION) {
+            String filePath = fileChooser.getSelectedFile().getAbsolutePath();
+            filePath = filePath.endsWith(".json") ? filePath : filePath + ".json";
+            JsonReader reader = new JsonReader(filePath);
+            try {
+                Whiteboard temporaryWhiteboard = reader.read();
+                getContentPane().removeAll();
+                board = temporaryWhiteboard;
+                panel = new WhiteboardPanel(board);
+                add(panel);
+                add(buttonPanel);
+                pack();
+            } catch (IOException e) {
+                System.out.println("I couldn't find a file with that name in the data directory.");
+            }
         }
     }
 }

@@ -11,6 +11,7 @@ import java.util.List;
 public class WhiteboardPanel extends JPanel {
     private Whiteboard board;
     private List<TextComponent> textComponents;
+    private static final int MIN_SIZE = 10;
 
     public WhiteboardPanel(Whiteboard board) {
         this.board = board;
@@ -24,6 +25,8 @@ public class WhiteboardPanel extends JPanel {
 
         TextComponent textComponent;
         Text text;
+        int minX = MIN_SIZE;
+        int minY = MIN_SIZE;
         for (int index = 0; index < board.getNumTextLinesOnBoard(); index++) {
             text = board.getTextAtIndex(index);
             textComponent = new TextComponent(text);
@@ -31,7 +34,11 @@ public class WhiteboardPanel extends JPanel {
             constraints.gridx = text.getXcoord();
             constraints.gridy = text.getYcoord();
 
+            minX = Math.max(minX, textComponent.getPreferredSize().width);
+            minY = Math.max(minY, textComponent.getPreferredSize().height);
+
             add(textComponent, constraints);
         }
+        setPreferredSize(new Dimension(minX * board.getWidth(), minY * board.getHeight()));
     }
 }
