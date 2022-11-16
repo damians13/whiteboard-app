@@ -52,7 +52,6 @@ public class WhiteboardApp extends JFrame {
         add(buttonPanel);
         pack();
 
-//        setLocationRelativeTo(null);
         setResizable(false);
         setVisible(true);
     }

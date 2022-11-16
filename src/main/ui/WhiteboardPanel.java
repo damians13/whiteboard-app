@@ -3,13 +3,15 @@ package ui;
 import model.Text;
 import model.Whiteboard;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.LineBorder;
-import javax.swing.event.MouseInputAdapter;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 // Extension of JPanel to display a whiteboard
@@ -25,7 +27,6 @@ public class WhiteboardPanel extends JPanel {
     // REQUIRES: frame not null
     public WhiteboardPanel(Whiteboard board, JFrame frame) {
         setBoard(board);
-        setBorder(new LineBorder(Color.green, 4));
         setLayout(new GridBagLayout());
         addMouseListener(new MouseAdapter() {
             // EFFECTS: adds a new text label to whiteboard when clicked with text supplied by user via input dialog
@@ -39,34 +40,44 @@ public class WhiteboardPanel extends JPanel {
                 addText(inputText, columnClicked, rowClicked, frame);
             }
         });
-//        addMouseMotionListener(new MouseMotionAdapter() {
-//            @Override
-//            public void mouseDragged(MouseEvent e) {
-//                super.mouseDragged(e);
-//                System.out.println("Dragged!");
-//            }
-//        });
+    }
+
+    // EFFECTS: adds a background image to the whiteboard to satisfy the graphical requirement
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        try {
+            Image backgroundImage = ImageIO.read(new File("./data/whiteboard.png"))
+                    .getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH);
+            g.drawImage(backgroundImage, 0, 0, this);
+        } catch (IOException e) {
+            // Couldn't find whiteboard.png
+        }
     }
 
     // EFFECTS: adds specified text to whiteboard at specified position and redraws the given frame
     // MODIFIES: this
     // REQUIRES: frame not null
     private void addText(String inputText, int columnClicked, int rowClicked, JFrame frame) {
-        Text text = new Text(inputText, columnClicked, rowClicked);
-        TextComponent textComponent = new TextComponent(text);
         GridBagConstraints constraints = new GridBagConstraints();
+        TextComponent textComponent = doAddText(inputText, columnClicked, rowClicked, constraints);
 
         minX = Math.max(minX, textComponent.getPreferredSize().width);
         minY = Math.max(minY, textComponent.getPreferredSize().height);
 
         addSpacingComponents(constraints, minX, minY);
-
-        constraints.insets = new Insets(0, 0, 0, 0);
-        constraints.gridx = columnClicked;
-        constraints.gridy = rowClicked;
-
-        add(textComponent, constraints);
         frame.pack();
+    }
+
+    // EFFECTS: adds text to whiteboard based on given parameters and returns the corresponding textcomponent
+    private TextComponent doAddText(String str, int x, int y, GridBagConstraints cons) {
+        Text text = new Text(str, x, y);
+        TextComponent textComponent = new TextComponent(text);
+        cons.insets = new Insets(0, 0, 0, 0);
+        cons.gridx = x;
+        cons.gridy = y;
+        add(textComponent, cons);
+        return textComponent;
     }
 
     // EFFECTS: sets the whiteboard represented by this panel
@@ -82,21 +93,13 @@ public class WhiteboardPanel extends JPanel {
         minX = MIN_SIZE;
         minY = MIN_SIZE;
 
-        constraints.insets = new Insets(0, 0, 0, 0);
-
-        TextComponent textComponent;
-        Text text;
         for (int index = 0; index < board.getNumTextLinesOnBoard(); index++) {
-            text = board.getTextAtIndex(index);
-            textComponent = new TextComponent(text);
-
-            constraints.gridx = text.getXcoord();
-            constraints.gridy = text.getYcoord();
+            Text text = board.getTextAtIndex(index);
+            TextComponent textComponent = doAddText(text.getText(), text.getXcoord(),
+                    text.getYcoord(), constraints);
 
             minX = Math.max(minX, textComponent.getPreferredSize().width);
             minY = Math.max(minY, textComponent.getPreferredSize().height);
-
-            add(textComponent, constraints);
         }
         addSpacingComponents(constraints, minX, minY);
     }
