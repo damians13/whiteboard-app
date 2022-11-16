@@ -12,21 +12,33 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.util.List;
 
+// Extension of JPanel to display a whiteboard
 public class WhiteboardPanel extends JPanel {
     private Whiteboard board;
     private List<TextComponent> textComponents;
     private static final int MIN_SIZE = 10;
+    private int minX;
+    private int minY;
 
-    public WhiteboardPanel() {
+    // EFFECTS: create a new whiteboard panel and set up a mouse listener on it to add new text to whiteboard
+    // MODIFIES: this
+    // REQUIRES: frame not null
+    public WhiteboardPanel(Whiteboard board, JFrame frame) {
+        setBoard(board);
         setBorder(new LineBorder(Color.green, 4));
         setLayout(new GridBagLayout());
-//        addMouseListener(new MouseAdapter() {
-//            @Override
-//            public void mouseClicked(MouseEvent e) {
-//                super.mouseClicked(e);
-//                System.out.println("Click!");
-//            }
-//        });
+        addMouseListener(new MouseAdapter() {
+            // EFFECTS: adds a new text label to whiteboard when clicked with text supplied by user via input dialog
+            // MODIFIES: this
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int columnClicked = e.getPoint().x / minX;
+                int rowClicked = e.getPoint().y / minY;
+
+                String inputText = JOptionPane.showInputDialog("Enter text to put here: ");
+                addText(inputText, columnClicked, rowClicked, frame);
+            }
+        });
 //        addMouseMotionListener(new MouseMotionAdapter() {
 //            @Override
 //            public void mouseDragged(MouseEvent e) {
@@ -34,6 +46,27 @@ public class WhiteboardPanel extends JPanel {
 //                System.out.println("Dragged!");
 //            }
 //        });
+    }
+
+    // EFFECTS: adds specified text to whiteboard at specified position and redraws the given frame
+    // MODIFIES: this
+    // REQUIRES: frame not null
+    private void addText(String inputText, int columnClicked, int rowClicked, JFrame frame) {
+        Text text = new Text(inputText, columnClicked, rowClicked);
+        TextComponent textComponent = new TextComponent(text);
+        GridBagConstraints constraints = new GridBagConstraints();
+
+        minX = Math.max(minX, textComponent.getPreferredSize().width);
+        minY = Math.max(minY, textComponent.getPreferredSize().height);
+
+        addSpacingComponents(constraints, minX, minY);
+
+        constraints.insets = new Insets(0, 0, 0, 0);
+        constraints.gridx = columnClicked;
+        constraints.gridy = rowClicked;
+
+        add(textComponent, constraints);
+        frame.pack();
     }
 
     // EFFECTS: sets the whiteboard represented by this panel
@@ -46,21 +79,19 @@ public class WhiteboardPanel extends JPanel {
     public void drawWhiteboardPanel() {
         removeAll();
         GridBagConstraints constraints = new GridBagConstraints();
+        minX = MIN_SIZE;
+        minY = MIN_SIZE;
 
         constraints.insets = new Insets(0, 0, 0, 0);
 
         TextComponent textComponent;
         Text text;
-        int minX = MIN_SIZE;
-        int minY = MIN_SIZE;
         for (int index = 0; index < board.getNumTextLinesOnBoard(); index++) {
             text = board.getTextAtIndex(index);
             textComponent = new TextComponent(text);
 
             constraints.gridx = text.getXcoord();
             constraints.gridy = text.getYcoord();
-            constraints.weightx = 1;
-            constraints.weighty = 1;
 
             minX = Math.max(minX, textComponent.getPreferredSize().width);
             minY = Math.max(minY, textComponent.getPreferredSize().height);

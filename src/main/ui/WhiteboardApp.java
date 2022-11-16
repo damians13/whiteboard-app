@@ -36,8 +36,7 @@ public class WhiteboardApp extends JFrame {
         setLayout(new FlowLayout());
 
         board = new Whiteboard(10, 10);
-        panel = new WhiteboardPanel();
-        panel.setBoard(board);
+        panel = new WhiteboardPanel(board, this);
         panel.drawWhiteboardPanel();
         add(panel);
 
