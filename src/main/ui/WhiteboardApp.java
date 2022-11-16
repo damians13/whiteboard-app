@@ -36,7 +36,9 @@ public class WhiteboardApp extends JFrame {
         setLayout(new FlowLayout());
 
         board = new Whiteboard(10, 10);
-        panel = new WhiteboardPanel(board);
+        panel = new WhiteboardPanel();
+        panel.setBoard(board);
+        panel.drawWhiteboardPanel();
         add(panel);
 
         buttonPanel = new JPanel();
@@ -51,7 +53,7 @@ public class WhiteboardApp extends JFrame {
         add(buttonPanel);
         pack();
 
-        setLocationRelativeTo(null);
+//        setLocationRelativeTo(null);
         setResizable(false);
         setVisible(true);
     }
@@ -373,17 +375,16 @@ public class WhiteboardApp extends JFrame {
         fileChooser.setFileFilter(filter);
         fileChooser.setAcceptAllFileFilterUsed(false);
         fileChooser.setDialogTitle("Load...");
+        fileChooser.setApproveButtonText("Load");
         if (fileChooser.showSaveDialog(saveFrame) == JFileChooser.APPROVE_OPTION) {
             String filePath = fileChooser.getSelectedFile().getAbsolutePath();
             filePath = filePath.endsWith(".json") ? filePath : filePath + ".json";
             JsonReader reader = new JsonReader(filePath);
             try {
                 Whiteboard temporaryWhiteboard = reader.read();
-                getContentPane().removeAll();
                 board = temporaryWhiteboard;
-                panel = new WhiteboardPanel(board);
-                add(panel);
-                add(buttonPanel);
+                panel.setBoard(board);
+                panel.drawWhiteboardPanel();
                 pack();
             } catch (IOException e) {
                 System.out.println("I couldn't find a file with that name in the data directory.");
