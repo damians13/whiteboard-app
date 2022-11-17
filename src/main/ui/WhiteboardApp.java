@@ -97,7 +97,7 @@ public class WhiteboardApp extends JFrame {
     // EFFECTS: displays the user's whiteboard in the console
     // REQUIRES: board is not null
     private void displayWhiteboard(Whiteboard board) {
-        ArrayList<ArrayList<String>> boardText = new ArrayList<ArrayList<String>>();
+        ArrayList<ArrayList<String>> boardText = new ArrayList<>();
         // Fill each entry with a "." to start
         ArrayList<String> row;
         for (int y = 0; y < board.getHeight(); y++) {
@@ -367,14 +367,13 @@ public class WhiteboardApp extends JFrame {
     // EFFECTS: loads a popup GUI to load a saved whiteboard
     // MODIFIES: this
     public void openLoadWhiteboardGUI() {
-        JFrame saveFrame = new JFrame();
+        JFrame loadFrame = new JFrame();
         JFileChooser fileChooser = new JFileChooser("./data");
         FileNameExtensionFilter filter = new FileNameExtensionFilter("JSON Files", "json");
         fileChooser.setFileFilter(filter);
         fileChooser.setAcceptAllFileFilterUsed(false);
         fileChooser.setDialogTitle("Load...");
-        fileChooser.setApproveButtonText("Load");
-        if (fileChooser.showSaveDialog(saveFrame) == JFileChooser.APPROVE_OPTION) {
+        if (fileChooser.showOpenDialog(loadFrame) == JFileChooser.APPROVE_OPTION) {
             String filePath = fileChooser.getSelectedFile().getAbsolutePath();
             filePath = filePath.endsWith(".json") ? filePath : filePath + ".json";
             JsonReader reader = new JsonReader(filePath);

@@ -15,16 +15,18 @@ public class Whiteboard {
     // EFFECTS: creates a new, blank whiteboard of size width x height
     // REQUIRES: width > 0 AND height > 0
     public Whiteboard(int width, int height) {
-        listOfText = new ArrayList<Text>();
+        listOfText = new ArrayList<>();
         this.width = width;
         this.height = height;
     }
 
     // MODIFIES: this
-    // EFFECTS: writes text on the whiteboard at the provided x and y coordinates
+    // EFFECTS: writes text on the whiteboard at the provided x and y coordinates and returns the text object
     // REQUIRES: 0 <= xcoord < width AND 0 <= ycoord < height
-    public void addText(String text, int xcoord, int ycoord) {
-        listOfText.add(new Text(text, xcoord, ycoord));
+    public Text addText(String text, int xcoord, int ycoord) {
+        Text textObject = new Text(text, xcoord, ycoord);
+        listOfText.add(textObject);
+        return textObject;
     }
 
     // MODIFIES: this

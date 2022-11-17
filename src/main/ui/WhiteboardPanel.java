@@ -9,7 +9,6 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -21,13 +20,15 @@ public class WhiteboardPanel extends JPanel {
     private static final int MIN_SIZE = 10;
     private int minX;
     private int minY;
+    private GridBagLayout layout;
 
     // EFFECTS: create a new whiteboard panel and set up a mouse listener on it to add new text to whiteboard
     // MODIFIES: this
     // REQUIRES: frame not null
     public WhiteboardPanel(Whiteboard board, JFrame frame) {
+        layout = new GridBagLayout();
         setBoard(board);
-        setLayout(new GridBagLayout());
+        setLayout(layout);
         addMouseListener(new MouseAdapter() {
             // EFFECTS: adds a new text label to whiteboard when clicked with text supplied by user via input dialog
             // MODIFIES: this
@@ -71,11 +72,32 @@ public class WhiteboardPanel extends JPanel {
 
     // EFFECTS: adds text to whiteboard based on given parameters and returns the corresponding textcomponent
     private TextComponent doAddText(String str, int x, int y, GridBagConstraints cons) {
-        Text text = new Text(str, x, y);
+        Text text = board.addText(str, x, y);
         TextComponent textComponent = new TextComponent(text);
         cons.insets = new Insets(0, 0, 0, 0);
         cons.gridx = x;
         cons.gridy = y;
+
+        textComponent.addMouseMotionListener(new MouseMotionAdapter() {
+            // EFFECTS: moves the text component to the nearest grid cell to the cursor when it is being dragged
+            // MODIFIES: textComponent, textComponent.getText()
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                int newX = e.getPoint().x / minX + textComponent.getText().getXcoord();
+                int newY = e.getPoint().y / minY + textComponent.getText().getYcoord();
+
+                // Keep text component on the whiteboard panel
+                newX = Math.min(board.getWidth() - 1, Math.max(0, newX));
+                newY = Math.min(board.getHeight() - 1, Math.max(0, newY));
+
+                cons.gridx = newX;
+                cons.gridy = newY;
+                layout.setConstraints(textComponent, cons);
+                board.moveText(textComponent.getText(), newX, newY);
+                revalidate();
+            }
+        });
+
         add(textComponent, cons);
         return textComponent;
     }
