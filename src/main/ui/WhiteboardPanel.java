@@ -16,7 +16,6 @@ import java.util.List;
 // Extension of JPanel to display a whiteboard
 public class WhiteboardPanel extends JPanel {
     private Whiteboard board;
-    private List<TextComponent> textComponents;
     private static final int MIN_SIZE = 10;
     private int minX;
     private int minY;
@@ -113,11 +112,13 @@ public class WhiteboardPanel extends JPanel {
                 newX = Math.min(board.getWidth() - 1, Math.max(0, newX));
                 newY = Math.min(board.getHeight() - 1, Math.max(0, newY));
 
-                constraints.gridx = newX;
-                constraints.gridy = newY;
-                layout.setConstraints(textComponent, constraints);
-                board.moveText(textComponent.getText(), newX, newY);
-                revalidate();
+                if (newX != textComponent.getText().getXcoord() || newY != textComponent.getText().getYcoord()) {
+                    constraints.gridx = newX;
+                    constraints.gridy = newY;
+                    layout.setConstraints(textComponent, constraints);
+                    board.moveText(textComponent.getText(), newX, newY);
+                    revalidate();
+                }
             }
         });
     }

@@ -15,6 +15,7 @@ public class Whiteboard {
     // EFFECTS: creates a new, blank whiteboard of size width x height
     // REQUIRES: width > 0 AND height > 0
     public Whiteboard(int width, int height) {
+        EventLog.getInstance().logEvent(new Event("Whiteboard created with size " + width + "x" + height));
         listOfText = new ArrayList<>();
         this.width = width;
         this.height = height;
@@ -24,6 +25,8 @@ public class Whiteboard {
     // EFFECTS: writes text on the whiteboard at the provided x and y coordinates and returns the text object
     // REQUIRES: 0 <= xcoord < width AND 0 <= ycoord < height
     public Text addText(String text, int xcoord, int ycoord) {
+        EventLog.getInstance().logEvent(
+                new Event("Adding mew text \"" + text + "\" to whiteboard at (" + xcoord + ", " + ycoord + ")"));
         Text textObject = new Text(text, xcoord, ycoord);
         listOfText.add(textObject);
         return textObject;
@@ -34,6 +37,7 @@ public class Whiteboard {
     // (if there are duplicates, the first one will be removed)
     // REQUIRES: text is on the whiteboard
     public void removeText(Text text) {
+        EventLog.getInstance().logEvent(new Event("Text \"" + text.getText() + "\" removed from whiteboard"));
         listOfText.remove(text);
     }
 
@@ -43,6 +47,8 @@ public class Whiteboard {
     public void moveText(Text text, int newx, int newy) {
         text.setXcoord(newx);
         text.setYcoord(newy);
+        EventLog.getInstance().logEvent(
+                new Event("Text \"" + text.getText() + "\" moved to (" + newx + ", " + newy + ")"));
     }
 
     // REQUIRES: 0 <= index <= listOfText.size() - 1
@@ -67,6 +73,7 @@ public class Whiteboard {
     // the new edge
     // REQUIRES: width > 0
     public void setWidth(int width) {
+        EventLog.getInstance().logEvent(new Event("Whiteboard width changed from " + this.width + " to " + width));
         this.width = width;
 
         for (Text text : listOfText) {
@@ -81,6 +88,7 @@ public class Whiteboard {
     // to the new edge
     // REQUIRES: height > 0
     public void setHeight(int height) {
+        EventLog.getInstance().logEvent(new Event("Whiteboard height changed from " + this.height + " to " + height));
         this.height = height;
 
         for (Text text : listOfText) {

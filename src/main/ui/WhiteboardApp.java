@@ -1,11 +1,14 @@
 package ui;
 
+import model.EventLog;
 import model.Text;
 import model.Whiteboard;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,6 +36,7 @@ public class WhiteboardApp extends JFrame {
     // EFFECTS: handles the main loop of the GUI application
     private void runWhiteboardAppGUI() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        addWindowCloseListener();
         setLayout(new FlowLayout());
 
         board = new Whiteboard(10, 10);
@@ -54,6 +58,18 @@ public class WhiteboardApp extends JFrame {
 
         setResizable(false);
         setVisible(true);
+    }
+
+    // EFFECTS: adds a listener to the frame that prints the contents of the event log to the console
+    private void addWindowCloseListener() {
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                EventLog.getInstance().forEach((ev) -> {
+                    System.out.println(ev.toString());
+                });
+            }
+        });
     }
 
     // EFFECTS: handles the main loop of the CLI application
