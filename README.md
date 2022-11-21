@@ -94,3 +94,15 @@ Text "Bye!" x-coordinate changed from 4 to 5
 Mon Nov 21 12:59:14 PST 2022
 Text "Bye!" moved to (5, 8)
 ```
+
+## Phase 4: Task 3
+- WhiteboardApp does not need a Whiteboard field (and probably shouldn't have one) since it has a WhiteboardPanel field
+  which gives the GUI representation of the Whiteboard. I would remove this association and get the Whiteboard object from
+  the WhiteboardPanel field wherever I need it
+- I don't like how ButtonActionListener needs a reference to the WhiteboardApp. I would delete this class and replace
+  references to it with an anonymous class implementing the ActionListener interface. This would overflow the method
+  length limit, so I would extract the code related to the save and load buttons to a private helper method
+- The WhiteboardApp class could be split into two classes to follow the single responsibility principle. Currently,
+  this class has methods to run both the GUI (phase 3) and CLI (phase 2) versions of the application, which should be
+  separated. This isn't reflected in the UML class diagram, however it does have to do with the design of my project and
+  is something I would like to refactor
