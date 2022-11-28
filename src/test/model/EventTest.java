@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -38,5 +39,27 @@ public class EventTest {
     @Test
     public void testToString() {
         assertEquals(d.toString() + "\n" + "Sensor open at door", e.toString());
+    }
+
+    // This is a static method to help test that events are logged with their expected descriptions
+    public static void assertLastEventDescriptionEquals(String expected) {
+        Iterator<Event> iterator = EventLog.getInstance().iterator();
+        Event last = new Event("");
+        while (iterator.hasNext()) {
+            last = iterator.next();
+        }
+        assertEquals(expected, last.getDescription());
+    }
+
+    // This is a static method to help test that events are logged with their expected descriptions
+    public static void assertSecondLastEventDescriptionEquals(String expected) {
+        Iterator<Event> iterator = EventLog.getInstance().iterator();
+        Event last = new Event("");
+        Event secondLast = new Event("");
+        while (iterator.hasNext()) {
+            secondLast = last;
+            last = iterator.next();
+        }
+        assertEquals(expected, secondLast.getDescription());
     }
 }

@@ -21,6 +21,7 @@ class WhiteboardTest {
         assertEquals(0, board.getNumTextLinesOnBoard());
         assertEquals(32, board.getWidth());
         assertEquals(20, board.getHeight());
+        EventTest.assertLastEventDescriptionEquals("Whiteboard created with size 32x20");
     }
 
     @Test
@@ -29,11 +30,13 @@ class WhiteboardTest {
         assertEquals(0, oneByOne.getNumTextLinesOnBoard());
         assertEquals(1, oneByOne.getWidth());
         assertEquals(1, oneByOne.getHeight());
+        EventTest.assertLastEventDescriptionEquals("Whiteboard created with size 1x1");
     }
 
     @Test
     public void testAddSingleText() {
         board.addText("Hello, world!", 0, 13);
+        EventTest.assertSecondLastEventDescriptionEquals("Adding new text \"Hello, world!\" to whiteboard at (0, 13)");
 
         Text line = board.getTextAtIndex(0);
 
@@ -45,9 +48,13 @@ class WhiteboardTest {
     public void testMultipleText() {
         // Test after repeated additions, including corners
         board.addText("Hello, world!", 0, 13);
+        EventTest.assertSecondLastEventDescriptionEquals("Adding new text \"Hello, world!\" to whiteboard at (0, 13)");
         board.addText("", 6, 20);
+        EventTest.assertSecondLastEventDescriptionEquals("Adding new text \"\" to whiteboard at (6, 20)");
         board.addText("foo", 0, 0);
+        EventTest.assertSecondLastEventDescriptionEquals("Adding new text \"foo\" to whiteboard at (0, 0)");
         board.addText("bar", 32, 20);
+        EventTest.assertSecondLastEventDescriptionEquals("Adding new text \"bar\" to whiteboard at (32, 20)");
 
         Text line = board.getTextAtIndex(0);
         Text secondLine = board.getTextAtIndex(1);
@@ -76,6 +83,7 @@ class WhiteboardTest {
         board.addText("foo", 1, 13);
         Text foo = board.getTextAtIndex(0);
         board.removeText(foo);
+        EventTest.assertLastEventDescriptionEquals("Text \"foo\" removed from whiteboard");
         assertEquals(0, board.getNumTextLinesOnBoard());
     }
 
@@ -86,6 +94,7 @@ class WhiteboardTest {
         Text foo0 = board.getTextAtIndex(0);
         Text foo1 = board.getTextAtIndex(1);
         board.removeText(foo0);
+        EventTest.assertLastEventDescriptionEquals("Text \"foo\" removed from whiteboard");
 
         assertEquals(1, board.getNumTextLinesOnBoard());
         Text remaining = board.getTextAtIndex(0);
@@ -102,6 +111,7 @@ class WhiteboardTest {
         Text bar = board.getTextAtIndex(1);
         // Remove middle entry
         board.removeText(bar);
+        EventTest.assertLastEventDescriptionEquals("Text \"bar\" removed from whiteboard");
         assertEquals(2, board.getNumTextLinesOnBoard());
         Text firstLine = board.getTextAtIndex(0);
         Text secondLine = board.getTextAtIndex(1);
@@ -126,8 +136,11 @@ class WhiteboardTest {
         Text baz = board.getTextAtIndex(2);
 
         board.removeText(foo);
+        EventTest.assertLastEventDescriptionEquals("Text \"foo\" removed from whiteboard");
         board.removeText(bar);
+        EventTest.assertLastEventDescriptionEquals("Text \"bar\" removed from whiteboard");
         board.removeText(baz);
+        EventTest.assertLastEventDescriptionEquals("Text \"baz\" removed from whiteboard");
 
         assertEquals(0, board.getNumTextLinesOnBoard());
     }
@@ -137,6 +150,7 @@ class WhiteboardTest {
         board.addText("foo", 1, 13);
         Text foo = board.getTextAtIndex(0);
         board.moveText(foo, 5, 6);
+        EventTest.assertLastEventDescriptionEquals("Text \"foo\" moved to (5, 6)");
 
         assertEquals(5, foo.getXcoord());
         assertEquals(6, foo.getYcoord());
@@ -147,14 +161,17 @@ class WhiteboardTest {
         board.addText("foo", 1, 13);
         Text foo = board.getTextAtIndex(0);
         board.moveText(foo, 5, 6);
+        EventTest.assertLastEventDescriptionEquals("Text \"foo\" moved to (5, 6)");
         assertEquals(5, foo.getXcoord());
         assertEquals(6, foo.getYcoord());
 
         board.moveText(foo, 0, 0);
+        EventTest.assertLastEventDescriptionEquals("Text \"foo\" moved to (0, 0)");
         assertEquals(0, foo.getXcoord());
         assertEquals(0, foo.getYcoord());
 
         board.moveText(foo, 31, 19);
+        EventTest.assertLastEventDescriptionEquals("Text \"foo\" moved to (31, 19)");
         assertEquals(31, foo.getXcoord());
         assertEquals(19, foo.getYcoord());
     }
@@ -166,6 +183,7 @@ class WhiteboardTest {
         Text foo0 = board.getTextAtIndex(0);
         Text foo1 = board.getTextAtIndex(1);
         board.moveText(foo0, 5, 6);
+        EventTest.assertLastEventDescriptionEquals("Text \"foo\" moved to (5, 6)");
 
         assertEquals(5, foo0.getXcoord());
         assertEquals(6, foo0.getYcoord());
@@ -183,6 +201,7 @@ class WhiteboardTest {
         Text bar = board.getTextAtIndex(1);
         Text baz = board.getTextAtIndex(1);
         board.moveText(bar, 5, 6);
+        EventTest.assertLastEventDescriptionEquals("Text \"bar\" moved to (5, 6)");
 
         assertEquals(1, foo.getXcoord());
         assertEquals(13, foo.getYcoord());
@@ -198,12 +217,14 @@ class WhiteboardTest {
     public void testSetWidth() {
         board.setWidth(40);
         assertEquals(40, board.getWidth());
+        EventTest.assertLastEventDescriptionEquals("Whiteboard width changed from 32 to 40");
     }
 
     @Test
     public void testSetHeight() {
         board.setHeight(50);
         assertEquals(50, board.getHeight());
+        EventTest.assertLastEventDescriptionEquals("Whiteboard height changed from 20 to 50");
     }
 
     @Test

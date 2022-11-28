@@ -26,7 +26,7 @@ public class Whiteboard {
     // REQUIRES: 0 <= xcoord < width AND 0 <= ycoord < height
     public Text addText(String text, int xcoord, int ycoord) {
         EventLog.getInstance().logEvent(
-                new Event("Adding mew text \"" + text + "\" to whiteboard at (" + xcoord + ", " + ycoord + ")"));
+                new Event("Adding new text \"" + text + "\" to whiteboard at (" + xcoord + ", " + ycoord + ")"));
         Text textObject = new Text(text, xcoord, ycoord);
         listOfText.add(textObject);
         return textObject;
