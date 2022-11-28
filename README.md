@@ -38,7 +38,7 @@ would like to open, and clicking "Open"
 Mon Nov 21 12:58:56 PST 2022
 Whiteboard created with size 10x10
 Mon Nov 21 12:59:01 PST 2022
-Adding mew text "Hello, CPSC 210!" to whiteboard at (2, 3)
+Adding new text "Hello, CPSC 210!" to whiteboard at (2, 3)
 Mon Nov 21 12:59:01 PST 2022
 New text "Hello, CPSC 210!" created at (2, 3)
 Mon Nov 21 12:59:03 PST 2022
@@ -66,7 +66,7 @@ Text "Hello, CPSC 210!" y-coordinate changed from 6 to 7
 Mon Nov 21 12:59:03 PST 2022
 Text "Hello, CPSC 210!" moved to (4, 7)
 Mon Nov 21 12:59:06 PST 2022
-Adding mew text "Hi" to whiteboard at (6, 6)
+Adding new text "Hi" to whiteboard at (6, 6)
 Mon Nov 21 12:59:06 PST 2022
 New text "Hi" created at (6, 6)
 Mon Nov 21 12:59:07 PST 2022
