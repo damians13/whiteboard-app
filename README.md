@@ -104,5 +104,8 @@ Text "Bye!" moved to (5, 8)
   length limit, so I would extract the code related to the save and load buttons to a private helper method
 - The WhiteboardApp class could be split into two classes to follow the single responsibility principle. Currently,
   this class has methods to run both the GUI (phase 3) and CLI (phase 2) versions of the application, which should be
-  separated. This isn't reflected in the UML class diagram, however it does have to do with the design of my project and
-  is something I would like to refactor
+  separated. This refactor would result in two classes which are each more cohesive than the original class
+- To reduce coupling between whiteboard and text (and also their GUI components), an interface/abstract class could be
+added which would outline the basic requirements for something to be on the whiteboard (examples could be toJson(), x
+and y coordinate fields, mouse drag event listener, etc.). This would also allow for things other than text to be added
+to the whiteboard in the future
