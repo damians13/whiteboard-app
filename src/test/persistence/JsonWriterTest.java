@@ -23,7 +23,7 @@ public class JsonWriterTest {
         reader = new JsonReader("./data/whiteboard1.json");
         writeBoard = new Whiteboard(8, 4);
 
-        writeBoard.addText("Hello, CPSC 210!", 0, 0);
+        writeBoard.addText("Hello, class!", 0, 0);
         writeBoard.addText("hi", 5, 3);
 
         try {

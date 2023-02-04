@@ -9,8 +9,7 @@ import java.io.PrintWriter;
 
 
 // Represents a writer that writes JSON representation of workroom to file
-// This class is based on the provided demo class: (taken October 24, 2022)
-// https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo/blob/master/src/main/persistence/JsonWriter.java
+// This class is based on a demo given in class (taken October 24, 2022)
 public class JsonWriter {
     private static final int TAB = 4;
     private PrintWriter writer;

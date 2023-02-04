@@ -12,9 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Unit tests for the Event
- * This class was taken from
- * https://github.students.cs.ubc.ca/CPSC210/AlarmSystem/blob/main/src/test/ca/ubc/cpsc210/alarm/test/EventLogTest.java
- * on November 25, 2022
+ * This class was taken from class examples on November 25, 2022
  */
 public class EventTest {
     private Event e;

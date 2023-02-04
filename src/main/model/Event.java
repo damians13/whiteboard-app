@@ -6,9 +6,7 @@ import java.util.Date;
 
 /**
  * Represents an alarm system event.
- * This class was taken from
- * https://github.students.cs.ubc.ca/CPSC210/AlarmSystem/blob/main/src/main/ca/ubc/cpsc210/alarm/model/Event.java
- * on November 21, 2022
+ * This class was taken from a class example on November 21, 2022
  */
 public class Event {
     private static final int HASH_CONSTANT = 13;

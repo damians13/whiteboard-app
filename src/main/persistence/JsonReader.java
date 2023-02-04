@@ -11,8 +11,7 @@ import java.nio.file.Paths;
 import java.util.stream.Stream;
 
 // Represents a reader that reads workroom from JSON data stored in file
-// This class is based on the provided demo class: (taken October 24, 2022)
-// https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo/blob/master/src/main/persistence/JsonReader.java
+// This class is based on a demo given in class (taken October 24, 2022)
 public class JsonReader {
     private String filePath;
 

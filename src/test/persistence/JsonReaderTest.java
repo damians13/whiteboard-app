@@ -22,7 +22,7 @@ public class JsonReaderTest {
             fail("Couldn't read emptyWhiteboard.json");
         }
         Whiteboard expected = new Whiteboard(8, 4);
-        expected.addText("Hello, CPSC 210!", 0, 0);
+        expected.addText("Hello, class!", 0, 0);
         expected.addText("hi", 5, 3);
 
         assertEquals(expected.getWidth(), board.getWidth());
